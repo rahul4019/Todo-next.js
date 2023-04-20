@@ -1,5 +1,6 @@
 import User from '@/models/user';
 import { connectDB, cookieToken, generateToken } from '@/utils/features';
+import bcrypt from 'bcrypt';
 
 const { asyncError, errorHandler } = require('@/middlewares/error');
 
@@ -19,10 +20,12 @@ const handler = asyncError(async (req, res) => {
     return errorHandler(res, 400, 'User already registered');
   }
 
+  const encryptedPassword = await bcrypt.hash(password, 10);
+
   user = await User.create({
     name,
     email,
-    password,
+    password: encryptedPassword,
   });
 
   const token = generateToken(user._id);
