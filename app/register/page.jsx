@@ -1,18 +1,21 @@
-'use client';
+'use client'
 
 import Link from 'next/link';
 import React from 'react';
+
+ 
 
 const page = () => {
   return (
     <div className="login">
       <section>
         <form>
+          <input type="text" placeholder="Enter Name" />
           <input type="email" placeholder="Enter Email" />
           <input type="password" placeholder="Enter Password" />
-          <button type="submit"> Login</button>
+          <button type="submit"> Sign Up</button>
           <p>OR</p>
-          <Link href={'/register'}>New User?</Link>
+          <Link href={'/login'}>Already registered?</Link>
         </form>
       </section>
     </div>

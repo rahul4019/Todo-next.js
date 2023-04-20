@@ -27,3 +27,17 @@ export const LogoutBtn = () => {
     <Link href={'/login'}>Login</Link>
   );
 };
+
+export const TodoBtn = ({ id, completed }) => {
+  const deleteHandler = (id) => {
+    alert(`${id} deleted`)
+  }
+  return (
+    <>
+      <input type="checkbox" checked={completed} />
+      <button className="btn" onClick={deleteHandler}>
+        Delete
+      </button>
+    </>
+  );
+};
