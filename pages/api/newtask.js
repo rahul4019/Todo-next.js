@@ -1,7 +1,6 @@
 import { asyncError, errorHandler } from '@/middlewares/error';
+import Task from '@/models/task';
 import { connectDB } from '@/utils/features';
-import mongoose from 'mongoose';
-const Task = mongoose.model('Task');
 
 const handler = asyncError(async (req, res) => {
   if (req.method !== 'POST')
@@ -10,7 +9,7 @@ const handler = asyncError(async (req, res) => {
 
   const { title, description } = req.body;
 
-  const task = await Task.create({
+  await Task.create({
     title,
     description,
     user: '6440d055f9b500fff40c2fdb',

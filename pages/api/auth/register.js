@@ -1,11 +1,11 @@
-import { connectDB } from '@/utils/features';
-import mongoose from 'mongoose';
-const User = mongoose.model('User');
-import {serialize} from "cookie"
+import User from '@/models/user';
+import { connectDB, cookieToken, generateToken } from '@/utils/features';
 
 const { asyncError, errorHandler } = require('@/middlewares/error');
 
 const handler = asyncError(async (req, res) => {
+  if (req.method !== 'POST')
+    return errorHandler(res, 400, 'Only POST method is allowed');
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -14,18 +14,25 @@ const handler = asyncError(async (req, res) => {
 
   await connectDB();
 
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
   if (user) {
     return errorHandler(res, 400, 'User already registered');
   }
 
-  await User.create({
+  user = await User.create({
     name,
     email,
     password,
   });
 
-  res.setHeader()
+  const token = generateToken(user._id);
+
+  cookieToken(res, token, true);
+
+  res.status(201).json({
+    success: true,
+    message: 'Registered Successfully!',
+  });
 });
 
 export default handler;
