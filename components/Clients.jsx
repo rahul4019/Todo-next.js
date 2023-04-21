@@ -2,24 +2,28 @@
 
 import Link from 'next/link';
 import { createContext, useContext, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
-const Context = createContext({ user: {} });
+export const Context = createContext({ user: {} });
 
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   return (
-    <Context.Provider value={{ user, setUser }}>{children}</Context.Provider>
+    <Context.Provider value={{ user, setUser }}>
+      {children}
+      <Toaster />
+    </Context.Provider>
   );
 };
 
 export const LogoutBtn = () => {
+  const { user, setUser } = useContext(Context);
+
   const logoutHandler = () => {
     alert('Logged out!');
   };
 
-  const { user } = useContext(Context);
-
-  return user ? (
+  return user._id ? (
     <button className="btn" onClick={logoutHandler}>
       Logout
     </button>
@@ -30,8 +34,8 @@ export const LogoutBtn = () => {
 
 export const TodoBtn = ({ id, completed }) => {
   const deleteHandler = (id) => {
-    alert(`${id} deleted`)
-  }
+    alert(`${id} deleted`);
+  };
   return (
     <>
       <input type="checkbox" checked={completed} />
