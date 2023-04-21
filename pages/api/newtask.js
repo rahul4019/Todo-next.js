@@ -1,6 +1,6 @@
 import { asyncError, errorHandler } from '@/middlewares/error';
 import Task from '@/models/task';
-import { connectDB } from '@/utils/features';
+import { checkAuth, connectDB } from '@/utils/features';
 
 const handler = asyncError(async (req, res) => {
   if (req.method !== 'POST')
@@ -9,10 +9,13 @@ const handler = asyncError(async (req, res) => {
 
   const { title, description } = req.body;
 
+  const user = await checkAuth(req);
+  if (!user) return errorHandler(res, 401, 'Login First');
+
   await Task.create({
     title,
     description,
-    user: '6440d055f9b500fff40c2fdb',
+    user:user._id,
   });
 
   await res.status(200).json({
