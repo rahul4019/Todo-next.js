@@ -4,7 +4,7 @@ import { Context } from '@/components/Clients';
 import { redirect } from 'next/navigation';
 import React, { useContext } from 'react';
 
-const page = () => {
+const Page = () => {
   const { user } = useContext(Context);
   if (!user._id) redirect('/login');
   return (

@@ -6,7 +6,7 @@ import { Context } from '@/components/Clients';
 import { redirect } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 
-const page = () => {
+const Page = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

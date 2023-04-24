@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { redirect, useRouter } from 'next/navigation';
 import { Context } from '@/components/Clients';
 
-const addTodoForm = () => {
+const AddTodoForm = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { user } = useContext(Context);
@@ -66,4 +66,4 @@ const addTodoForm = () => {
   );
 };
 
-export default addTodoForm;
+export default AddTodoForm;
