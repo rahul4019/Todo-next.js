@@ -1,11 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { redirect, useRouter } from 'next/navigation';
+import { Context } from '@/components/Clients';
 
 const addTodoForm = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const { user } = useContext(Context);
+
+  const router = useRouter();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -27,10 +32,16 @@ const addTodoForm = () => {
       if (!data.success) return toast.error(data.message);
 
       toast.success(data.message);
+
+      router.refresh(); // * refreshes the current page
+      setTitle('');
+      setDescription('');
     } catch (error) {
       toast.error(data.message);
     }
   };
+
+  if (!user._id) return redirect('/login');
 
   return (
     <div className="login">
