@@ -60,14 +60,33 @@ export const TodoBtn = ({ id, completed }) => {
       const data = await res.json();
       if (!data.success) return toast.error(data.message);
       router.refresh();
-      toast.success('Task deleted successfully')
+      toast.success('Task deleted successfully');
+    } catch (error) {
+      return toast.error(error);
+    }
+  };
+
+  const updateHandler = async (id) => {
+    try {
+      const res = await fetch(`/api/task/${id}`, {
+        method: 'PUT',
+      });
+
+      const data = await res.json();
+      if (!data.success) return toast.error(data.message);
+      toast.success(data.message);
+      router.refresh();
     } catch (error) {
       return toast.error(error);
     }
   };
   return (
     <>
-      <input type="checkbox" checked={completed} />
+      <input
+        type="checkbox"
+        checked={completed}
+        onChange={() => updateHandler(id)}
+      />
       <button className="btn" onClick={() => deleteHandler(id)}>
         Delete
       </button>
