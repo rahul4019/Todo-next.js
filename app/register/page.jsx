@@ -33,7 +33,7 @@ const page = () => {
       setUser(data.user);
       toast.success(data.message);
     } catch (error) {
-      toast.error(data.message);
+      return toast.error(error);
     }
   };
 

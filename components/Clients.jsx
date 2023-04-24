@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 
@@ -36,7 +37,7 @@ export const LogoutBtn = () => {
       setUser({});
       toast.success(data.message);
     } catch (error) {
-      toast.error(data.message);
+      return toast.error(error);
     }
   };
 
@@ -50,13 +51,24 @@ export const LogoutBtn = () => {
 };
 
 export const TodoBtn = ({ id, completed }) => {
-  const deleteHandler = (id) => {
-    alert(`${id} deleted`);
+  const router = useRouter();
+  const deleteHandler = async (id) => {
+    try {
+      const res = await fetch(`/api/task/${id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (!data.success) return toast.error(data.message);
+      router.refresh();
+      toast.success('Task deleted successfully')
+    } catch (error) {
+      return toast.error(error);
+    }
   };
   return (
     <>
       <input type="checkbox" checked={completed} />
-      <button className="btn" onClick={deleteHandler}>
+      <button className="btn" onClick={() => deleteHandler(id)}>
         Delete
       </button>
     </>
